@@ -1,0 +1,51 @@
+body
+{
+background-color:#F2F2F2;
+}
+h1
+{
+color:black;
+text-align:center;
+}
+p
+{
+font-family:"Times New Roman";
+font-size:20px;
+}
+
+
+.logoBorder
+{
+	border: 1;
+	color: red;
+}
+
+.textInput1
+{
+	width: 221px;
+	background: transparent url('images/bg.jpg') no-repeat;
+	color : #747862;
+	height:20px;
+	border:0;
+	padding:4px 8px;
+	margin-bottom:0px;
+}
+
+.fieldHolder
+{
+	width: 182px;
+	height: 27px;
+	background: url(tfbg2.gif) no-repeat;
+	float: left;
+}
+
+.textInput2
+{
+	width: 170px;
+	height: 22px;
+	background: none;
+	border: none;
+	color: #000000;
+	margin-top: 5px;
+	margin-left: 5px;
+}
