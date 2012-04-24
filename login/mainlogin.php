@@ -36,6 +36,11 @@
 <td><input type="submit" name="Submit" value="Login" ></td>
 </tr>
 </table>
+<?php
+if($_GET['failed_login']==1){
+echo "Wrong Username or Password";
+}
+?>
 </td>
 </form>
 </tr>

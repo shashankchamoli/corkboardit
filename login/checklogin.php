@@ -42,7 +42,8 @@ session_register("mypassword");
 header("location:login_success.php");
 }
 else {
-echo "Wrong Username or Password";
+$failed_login=1;
+header("location:mainlogin.php?failed_login=1");
 }
 ?>
 </body>
