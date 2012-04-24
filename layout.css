@@ -13,6 +13,14 @@ font-family:"Times New Roman";
 font-size:20px;
 }
 
+img.thumbnail {
+   padding:1px;
+   border:1px solid #021a40;
+   background-color:#ffeeff;
+   width:250px;
+   height: 250px;
+
+}
 
 .logoBorder
 {
