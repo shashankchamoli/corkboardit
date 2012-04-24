@@ -1,7 +1,7 @@
 <?php
 session_start();
 if(!session_is_registered(myusername)){
-header("location:/login/mainlogin.php");
+header("location:login/mainlogin.php");
 }
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -29,7 +29,7 @@ header("location:/login/mainlogin.php");
     Recent Corkboard Updates
     <?php
 	// I guarantee this code does not work!
-	$recentcbquery= "SELECT  c.Email,
+	$recentcbquery= sprintf("SELECT  c.Email,
    		c.Title,
    		c.CatName,
    		c.LastUpdate,
@@ -38,21 +38,31 @@ header("location:/login/mainlogin.php");
                         u.UserName
  	FROM  Corkboard c, Follow f, Watch w
 	LEFT JOIN  Follow f
-		ON  f.Follower = 'user1@gt.edu'
+		ON  f.Follower = '%s'
 	LEFT JOIN  Watch w
-		ON  w.User = 'user1@gt.edu'
+		ON  w.User = '%s'
             LEFT JOIN  User u ON
                    u.Email = f.Followee
 	WHERE  (
-         	 c.Email = 'user1@gt.edu'
+         	 c.Email = '%s'
          	OR  c.Email = f.Followee
          	OR  c.Title = w.CorkboardTitle
    		)
  ORDER BY  LastUpdate DESC
-	LIMIT  4";
+	LIMIT  4",
+        mysql_real_escape_string($_SESSION['myusername']),
+	mysql_real_escape_string($_SESSION['myusername']),
+	mysql_real_escape_string($_SESSION['myusername']));
 	
-	echo mysql_query($recentcbquery); 
-	
+	$result = mysql_query($recentcbquery); 
+        
+        while ($row = mysql_fetch_assoc($result)) {
+            echo $row['Title'];
+            echo $row['LastUpdate'];
+            echo $row['Visibility'];
+            echo $row['CorkboardTitle'];
+        } 	
+
 	?>
     
     <br />
