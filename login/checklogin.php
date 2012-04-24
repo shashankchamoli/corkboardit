@@ -38,6 +38,7 @@ $count=mysql_num_rows($result);
 if($count==1){
 // Register $myusername, $mypassword and redirect to file "login_success.php"
 session_register("myusername");
+$_SESSION["myusername"] = $myusername;
 header("location:login_success.php");
 }
 else {
