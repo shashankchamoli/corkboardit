@@ -102,7 +102,7 @@ mysql_select_db("$db_name")or die("cannot select DB");
  	
         while ($row = mysql_fetch_assoc($result)) {
             echo "<tr>";
-            echo "<td><a href='corkboard_view.php?username=".$_SESSION['myusername']."title=".$row['Title']."'>".$row['Title']."</a></td>";
+            echo "<td><a href='corkboard_view.php?username=".$_SESSION['myusername']."&title=".$row['Title']."'>".$row['Title']."</a></td>";
 	    echo "<td>".$row['CatName']."</td>";
             echo "<td>".$row['LastUpdate']."</td>";
 	    echo "</tr>";
