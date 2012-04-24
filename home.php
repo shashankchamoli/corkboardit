@@ -3,6 +3,15 @@ session_start();
 if(!session_is_registered(myusername)){
 header("location:login/mainlogin.php");
 }
+$host="academic-mysql.cc.gatech.edu"; // Host name 
+$username="cs4400_group29"; // Mysql username 
+$password="56wVseal"; // Mysql password 
+$db_name="cs4400_group29"; // Database name 
+$tbl_name="User"; // Table name
+
+// Connect to server and select databse.
+mysql_connect("$host", "$username", "$password")or die("cannot connect"); 
+mysql_select_db("$db_name")or die("cannot select DB");
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -27,55 +36,79 @@ header("location:login/mainlogin.php");
     <br />    
     
     Recent Corkboard Updates
+    <br />
+    <table border='1'>
+    <tr>
+	<td>User</td>
+	<td>Title</td>
+	<td>Category</td>
+	<td>Last Updated</td>
+    </tr>
     <?php
-	// I guarantee this code does not work!
-	$recentcbquery= sprintf("SELECT  c.Email,
-   		c.Title,
-   		c.CatName,
-   		c.LastUpdate,
-   		c.Visibility,   
-	  	w.CorkboardTitle,
-                        u.UserName
- 	FROM  Corkboard c
-	LEFT JOIN  Follow f
-		ON  f.Follower = '%s'
-	LEFT JOIN  Watch w
-		ON  w.User = '%s'
-            LEFT JOIN  User u ON
-                   u.Email = f.Followee
-	WHERE  (
-         	 c.Email = '%s'
-         	OR  c.Email = f.Followee
-         	OR  c.Title = w.CorkboardTitle
-   		)
- ORDER BY  LastUpdate DESC
-	LIMIT  4",
+	$recentcbquery= sprintf("
+	SELECT c.Email, c.Title, c.CatName, c.LastUpdate, c.Visibility, w.CorkboardTitle, u.UserName
+	FROM Corkboard c
+	LEFT JOIN Follow f ON f.Follower = '%s'
+	LEFT JOIN Watch w ON w.User = '%s'
+	LEFT JOIN User u ON u.Email = f.Followee
+	WHERE (
+	c.Email = '%s'
+	OR c.Email = f.Followee
+	OR c.Title = w.CorkboardTitle
+	)
+	ORDER BY LastUpdate DESC
+	LIMIT 4 
+	",
         mysql_real_escape_string($_SESSION['myusername']),
 	mysql_real_escape_string($_SESSION['myusername']),
 	mysql_real_escape_string($_SESSION['myusername']));
 	
-	$result = mysql_query($recentcbquery); 
-        
+        $result = mysql_query($recentcbquery); 
+ 	
         while ($row = mysql_fetch_assoc($result)) {
-            echo $row['Title'];
-            echo $row['LastUpdate'];
-            echo $row['Visibility'];
-            echo $row['CorkboardTitle'];
+            echo "<tr>";
+            echo "<td>".$row['UserName']."</td>";
+	    echo "<td>".$row['CorkboardTitle']."</td>";
+            echo "<td>".$row['CatName']."</td>";
+            echo "<td>".$row['LastUpdate']."</td>";
+	    echo "</tr>";
         } 	
 
 	?>
-    
+    </table>    
+
     <br />
     <br />
     My Corkboards
-    
+    <br />
+    <table border='1'>
+    <tr>
+	<td>Title</td>
+	<td>Category</td>
+	<td>Last Updated</td>
+    </tr>
     <?php
 	// this code does not work either!
-	$usercbquery= "SELECT  Title, CatName, LastUpdate FROM  Corkboard WHERE  Email = $name ORDER BY 		
-	LastUpdate DESC LIMIT  4";
-	
-	echo mysql_query($usercbquery);
+	$usercbquery= sprintf("
+	SELECT  Title, CatName, LastUpdate 
+	FROM  Corkboard 
+	WHERE  Email = '%s'
+	ORDER BY LastUpdate 
+	DESC 
+	LIMIT  4",
+	mysql_real_escape_string($_SESSION['myusername']));
+
+	$result = mysql_query($usercbquery); 
+ 	
+        while ($row = mysql_fetch_assoc($result)) {
+            echo "<tr>";
+            echo "<td>".$row['Title']."</td>";
+	    echo "<td>".$row['CatName']."</td>";
+            echo "<td>".$row['LastUpdate']."</td>";
+	    echo "</tr>";
+        } 
     ?>
+    </table>
     <br />
     <br />
    <form name="Pushpin Search" action="home.php" method="get">
