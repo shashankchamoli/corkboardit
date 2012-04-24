@@ -28,7 +28,7 @@
 <tr>
 <td>Password</td>
 <td>:</td>
-<td><input name="mypassword" type="text" id="mypassword" class="textInput1"></td>
+<td><input name="mypassword" type="password" id="mypassword" class="textInput1"></td>
 </tr>
 <tr>
 <td>&nbsp;</td>
@@ -36,7 +36,7 @@
 <td><input type="submit" name="Submit" value="Login" ></td>
 </tr>
 </table>
-<?php
+<?
 if($_GET['failed_login']==1){
 echo "Wrong Username or Password";
 }
