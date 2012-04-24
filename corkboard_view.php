@@ -63,7 +63,7 @@ $cbcat = $row['CatName'];
 		</tr>
 		<?php
 			$cbtnquery = sprintf("
-				SELECT Link
+				SELECT DISTINCT Link
        				FROM PushPin
        				WHERE Email = '%s'
 				AND CorkboardTitle = '%s'	
@@ -74,7 +74,13 @@ $cbcat = $row['CatName'];
 			$result = mysql_query($cbtnquery);
 			while ($row = mysql_fetch_assoc($result)) {
 				$link = $row['Link'];
-				echo "<td><img class='thumbnail' src='$link'/></td>";
+				$email = $_GET['email'];
+				$cbtitle = $_GET['title'];
+				echo "<td>
+					<a href='pushpin_view.php?email=$email&title=$cbtitle&link=$link'>
+						<img class='thumbnail' src='$link'/>
+					</a>
+				</td>";
 			}
 		?>			
 		</table>
