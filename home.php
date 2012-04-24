@@ -79,7 +79,7 @@ mysql_select_db("$db_name")or die("cannot select DB");
 
     <br />
     <br />
-    My Corkboards
+    My Corkboards &nbsp;&nbsp;<button>Add Corkboard</button>
     <br />
     <table border='1'>
     <tr>
