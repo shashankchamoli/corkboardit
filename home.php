@@ -8,10 +8,12 @@ header("location:login/mainlogin.php");
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<LINK REL=StyleSheet HREF="layout.css" TYPE="text/css" MEDIA=screen>
 		<title>CorkBoartIT | Home</title>
 	</head>
 	<body>
-    
+    <img src="images/logo_small.png" alt="logo" />
+		<br><br>
     Homepage for 
 	<?
           echo $_SESSION['myusername'];
