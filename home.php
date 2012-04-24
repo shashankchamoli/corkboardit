@@ -45,8 +45,9 @@ mysql_select_db("$db_name")or die("cannot select DB");
 	<td>Last Updated</td>
     </tr>
     <?php
+	/*
 	$recentcbquery= sprintf("
-	SELECT c.Email, c.Title, c.CatName, c.LastUpdate, c.Visibility, w.CorkboardTitle, u.UserName
+	SELECT DISTINCT c.Email, c.Title, c.CatName, c.LastUpdate, c.Visibility, w.CorkboardTitle, u.UserName
 	FROM Corkboard c
 	LEFT JOIN Follow f ON f.Follower = '%s'
 	LEFT JOIN Watch w ON w.User = '%s'
@@ -56,8 +57,21 @@ mysql_select_db("$db_name")or die("cannot select DB");
 	OR c.Email = f.Followee
 	OR c.Title = w.CorkboardTitle
 	)
-	ORDER BY LastUpdate DESC
+	ORDER BY c.LastUpdate DESC
 	LIMIT 4 
+	",
+	*/
+	$recentcbquery = sprintf("
+	SELECT DISTINCT c.Title, c.CatName, c.LastUpdate, c.Visibility, u.UserName, c.Email
+	FROM Corkboard c
+	LEFT JOIN User u ON u.Email = c.Email
+	LEFT JOIN Follow f ON f.Follower = '%s'
+	LEFT JOIN Watch w ON w.User = '%s'
+	WHERE u.Email = '%s'
+	OR u.Email = f.Followee
+	OR u.Email = w.CorkboardOwner	
+	ORDER BY c.LastUpdate DESC
+	LIMIT 4
 	",
         mysql_real_escape_string($_SESSION['myusername']),
 	mysql_real_escape_string($_SESSION['myusername']),
@@ -68,7 +82,7 @@ mysql_select_db("$db_name")or die("cannot select DB");
         while ($row = mysql_fetch_assoc($result)) {
             echo "<tr>";
             echo "<td>".$row['UserName']."</td>";
-	    echo "<td><a href='corkboard_view.php?username=".$row['UserName']."&title=".$row['Title']."'>".$row['Title']."</a></td>";
+	    echo "<td><a href='corkboard_view.php?email=".$row['Email']."&title=".$row['Title']."'>".$row['Title']."</a></td>";
             echo "<td>".$row['CatName']."</td>";
             echo "<td>".$row['LastUpdate']."</td>";
 	    echo "</tr>";
@@ -90,10 +104,12 @@ mysql_select_db("$db_name")or die("cannot select DB");
     <?php
 	// this code does not work either!
 	$usercbquery= sprintf("
-	SELECT  Title, CatName, LastUpdate 
-	FROM  Corkboard 
-	WHERE  Email = '%s'
-	ORDER BY LastUpdate 
+	SELECT  c.Title, c.CatName, c.LastUpdate, u.UserName 
+	FROM  Corkboard c
+        LEFT JOIN  User u
+        ON u.Email = c.Email
+	WHERE  c.Email = '%s'
+	ORDER BY c.LastUpdate 
 	DESC 
 	LIMIT  4",
 	mysql_real_escape_string($_SESSION['myusername']));
@@ -102,7 +118,7 @@ mysql_select_db("$db_name")or die("cannot select DB");
  	
         while ($row = mysql_fetch_assoc($result)) {
             echo "<tr>";
-            echo "<td><a href='corkboard_view.php?username=".$_SESSION['myusername']."&title=".$row['Title']."'>".$row['Title']."</a></td>";
+            echo "<td><a href='corkboard_view.php?email=".$_SESSION['myusername']."&title=".$row['Title']."'>".$row['Title']."</a></td>";
 	    echo "<td>".$row['CatName']."</td>";
             echo "<td>".$row['LastUpdate']."</td>";
 	    echo "</tr>";
