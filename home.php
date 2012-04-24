@@ -34,7 +34,7 @@ header("location:login/mainlogin.php");
    		c.Visibility,   
 	  	w.CorkboardTitle,
                         u.UserName
- 	FROM  Corkboard c, Follow f, Watch w
+ 	FROM  Corkboard c
 	LEFT JOIN  Follow f
 		ON  f.Follower = '%s'
 	LEFT JOIN  Watch w
