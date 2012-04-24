@@ -7,7 +7,48 @@
 	</head>
 	<body>
 		
+	<img src="images/logo_small.png" alt="logo" />
 		
+		<br><br>
 		
+		<h2 align="center">Edit Profile</h2>
+		
+		<form align="left">
+		<table align="center">
+			<tr>
+				<td>
+					Full Name:
+				</td>
+				<td>
+					<input type="text" name="fullname" />
+				</td>
+			</tr>
+			<tr>
+				<td>
+					Email:
+				</td>
+				<td>
+					<input type="text" name="email" />
+				</td>
+			</tr>
+			<tr>
+				<td>
+					PIN:
+				</td>
+				<td>
+					<input type="password" name="newpin" />
+				</td>
+			</tr>
+			<tr>
+				<td></td>
+				<td>
+					<button>Cancel</button>	<input type="submit" name="Submit" value="Save" >
+				</td>
+			</tr>
+		</table>
+		
+			 
+			
+		</form>
 	</body>
 </html>
