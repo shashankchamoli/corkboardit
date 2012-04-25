@@ -118,7 +118,7 @@ mysql_select_db("$db_name")or die("cannot select DB");
     </table>
     <br />
     <br />
-   <form name="Pushpin Search" action="home.php" method="get">
+   <form name="Pushpin Search" action="pushpin_search.php" method="get">
     <input type="text" name="p" class="textfield_effect" />
     <input type="submit" name="Submit" value="Pushpin Search" />
    
