@@ -45,8 +45,9 @@ mysql_select_db("$db_name")or die("cannot select DB");
 	<td>Last Updated</td>
     </tr>
     <?php
+	/*
 	$recentcbquery= sprintf("
-	SELECT c.Email, c.Title, c.CatName, c.LastUpdate, c.Visibility, w.CorkboardTitle, u.UserName
+	SELECT DISTINCT c.Email, c.Title, c.CatName, c.LastUpdate, c.Visibility, w.CorkboardTitle, u.UserName
 	FROM Corkboard c
 	LEFT JOIN Follow f ON f.Follower = '%s'
 	LEFT JOIN Watch w ON w.User = '%s'
@@ -58,6 +59,19 @@ mysql_select_db("$db_name")or die("cannot select DB");
 	)
 	ORDER BY c.LastUpdate DESC
 	LIMIT 4 
+	",
+	*/
+	$recentcbquery = sprintf("
+	SELECT DISTINCT c.Title, c.CatName, c.LastUpdate, c.Visibility, u.UserName, c.Email
+	FROM Corkboard c
+	LEFT JOIN User u ON u.Email = c.Email
+	LEFT JOIN Follow f ON f.Follower = '%s'
+	LEFT JOIN Watch w ON w.User = '%s'
+	WHERE u.Email = '%s'
+	OR u.Email = f.Followee
+	OR u.Email = w.CorkboardOwner	
+	ORDER BY c.LastUpdate DESC
+	LIMIT 4
 	",
         mysql_real_escape_string($_SESSION['myusername']),
 	mysql_real_escape_string($_SESSION['myusername']),
