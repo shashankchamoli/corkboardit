@@ -43,26 +43,11 @@ mysql_select_db("$db_name")or die("cannot select DB");
 	<td>Title</td>
 	<td>Category</td>
 	<td>Last Updated</td>
+	<td>Visibility</td>
     </tr>
     <?php
-	/*
-	$recentcbquery= sprintf("
-	SELECT DISTINCT c.Email, c.Title, c.CatName, c.LastUpdate, c.Visibility, w.CorkboardTitle, u.UserName
-	FROM Corkboard c
-	LEFT JOIN Follow f ON f.Follower = '%s'
-	LEFT JOIN Watch w ON w.User = '%s'
-	LEFT JOIN User u ON u.Email = f.Followee
-	WHERE (
-	c.Email = '%s'
-	OR c.Email = f.Followee
-	OR c.Title = w.CorkboardTitle
-	)
-	ORDER BY c.LastUpdate DESC
-	LIMIT 4 
-	",
-	*/
 	$recentcbquery = sprintf("
-	SELECT DISTINCT c.Title, c.CatName, c.LastUpdate, c.Visibility, u.UserName, c.Email
+	SELECT DISTINCT c.Title, c.CatName, c.LastUpdate, c.Visibility, u.UserName, c.Email, c.Visibility
 	FROM Corkboard c
 	LEFT JOIN User u ON u.Email = c.Email
 	LEFT JOIN Follow f ON f.Follower = '%s'
@@ -82,9 +67,15 @@ mysql_select_db("$db_name")or die("cannot select DB");
         while ($row = mysql_fetch_assoc($result)) {
             echo "<tr>";
             echo "<td>".$row['UserName']."</td>";
-	    echo "<td><a href='corkboard_view.php?email=".$row['Email']."&title=".$row['Title']."'>".$row['Title']."</a></td>";
+	    $pinlink = "corkboard_view.php?email=".$row['Email']."&title=".$row['Title'];
+	    if ($row['Visibility'] == "Private") {
+		echo "<td><a href='password_corkboard.php'>".$row['Title']."</a></td>";
+	    } else {
+	        echo "<td><a href=".$pinlink.">".$row['Title']."</a></td>";
+	    }
             echo "<td>".$row['CatName']."</td>";
             echo "<td>".$row['LastUpdate']."</td>";
+	    echo "<td>".$row['Visibility']."</td>";
 	    echo "</tr>";
         } 	
 
