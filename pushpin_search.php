@@ -18,7 +18,7 @@
 	 include 'config.php';
 	 include 'opendb.php';
 	$query = "SELECT p.Description,p.CorkboardTitle,p.Email,p.Link FROM  PushPin p WHERE p.Description='$trimmedPP' OR p.Tag='$trimmedPP'";
-	echo $query;
+
  $numresults=mysql_query($query);
  $numrows=mysql_num_rows($numresults);
 
@@ -31,12 +31,13 @@
   $result = mysql_query($query);
 
 // display what the person searched for
+
+echo "You searched for: &quot;" . $pp . "&quot; returned " .$numrows." result(s).";
 echo "<br>";
-echo "You searched for: &quot;" . $pp . "&quot; returned" .$numrows." result(s).";
 echo "<br>";
 
 // begin to show results set
-echo "<table border=1 align='center'><tr class='odd'><td>Pushpin Description</td><td>Corkboard</td><td>Owner</td></tr>";
+echo "<table border=1 align='left'><tr class='odd'><td>Pushpin Description</td><td>Corkboard</td><td>Owner</td></tr>";
  	
  	while ($row = mysql_fetch_assoc($result)) {      
         echo "<tr>";
