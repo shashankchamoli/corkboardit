@@ -12,11 +12,11 @@
 		
     <h2 align="center">Add Corkboard</h2>
 		
-		<form align="left">
+		<form align="left" name="addCBForm" method="post" action="corkboard_add_submit.php">
 		<table align="center">
 			<tr>
 				<td>
-					Corkboard Title:
+					Corkboard Title:*
 				</td>
 				<td>
 					<input type="text" name="cork_title" />
@@ -37,7 +37,7 @@
 								echo "<option value=Catagory" . $i . ">Catagory". $i ."</option>";
 							}
 						?>
-					</select>
+					</select>*
 				</td>
 			</tr>
 			<tr>
@@ -45,7 +45,7 @@
 					Private:
 				</td>
 				<td>
-					<input type="checkbox" name="private" value="private" />
+					<input type="checkbox" name="private" value="Y" />
 				</td>
 			</tr>
 			<tr>
