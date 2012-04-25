@@ -84,7 +84,10 @@ mysql_select_db("$db_name")or die("cannot select DB");
 
     <br />
     <br />
-    My Corkboards &nbsp;&nbsp;<button>Add Corkboard</button>
+    <form name="Add Corkboard" action="corkboard_add.php" method="get">
+
+    My Corkboards &nbsp;&nbsp;<input type="submit" name="Submit" value="Add Corkboard" />
+   </form>
     <br />
     <table border='1'>
     <tr>
@@ -121,7 +124,7 @@ mysql_select_db("$db_name")or die("cannot select DB");
    <form name="Pushpin Search" action="pushpin_search.php" method="get">
     <input type="text" name="p" class="textfield_effect" />
     <input type="submit" name="Submit" value="Pushpin Search" />
-   
+   </form
 	
    
 	</body>
