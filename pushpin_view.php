@@ -6,17 +6,50 @@
 		<title>Pushpin</title>
 	</head>
 	<body>
+	
+		<?php
+		session_start();
+		
+		include 'config.php';
+		include 'opendb.php';
+		
+		if(!session_is_registered(myusername)){
+			header("location:login/mainlogin.php");
+		}
+		
+		$host="academic-mysql.cc.gatech.edu"; // Host name 
+		$username="cs4400_group29"; // Mysql username 
+		$password="56wVseal"; // Mysql password 
+		$db_name="cs4400_group29"; // Database name 
+		$tbl_name="User"; // Table name
+		
+		// Connect to server and select database.
+		mysql_connect("$host", "$username", "$password")or die("cannot connect"); 
+		mysql_select_db("$db_name")or die("cannot select DB");	
+		
+		// link, title, email
+		?>
+		
 		<img src="images/logo_small.png" alt="logo" />
 		<br><br>
 		
-		<h2 align="center"><?php echo "Pushpin_Title on "?><a href="corkboard_view.php"><?php echo "Corkboard_Title" ?></a></h2>
+		<h2 align="center"><?php 
+			$pushtitle = mysql_query("SELECT DISTINCT Description FROM PushPin
+				WHERE Link='' AND Email='' AND CorkboardTitle=''");
+			echo "$pushtitle on "
+		?>
+		
+		<a href="corkboard_view.php"><?php echo "Corkboard_Title" ?></a></h2>
 
 		<table align="center">
 			<tr>
 				<td>Pinned by <?php echo "UserName" ?>&nbsp;<button>Follow</button></td>
 			</tr>
 			<tr>
-				<td>On: <?php echo "DATE" ?></td>
+				<td>On: <?php
+					$pushdate = mysql_query("SELECT DISTINCT DateAndTime FROM PushPin WHERE Link = '%key'");
+					echo $pushdate
+				?></td>
 			</tr>
 		</table>
 		<hr>
@@ -24,19 +57,27 @@
 		<table align="center">
 			<tr>
 			<td>
-				<a href="http://pictures.topspeed.com/IMG/crop/201103/2012-lamborghini-aventado-14_460x0w.jpg">
-					<img class="pushpinMain" src="http://pictures.topspeed.com/IMG/crop/201103/2012-lamborghini-aventado-14_460x0w.jpg"/>
+				<a href="Pushpin Image">
+					<img class="pushpinMain" src=php <?php $pinimg ?>/>
 				</a>
 			</td>
 			</tr>
 			<tr>
 				<td>
-					<a><?php echo "Description goes here"  ?></a>
+					<a><?php
+					$pushdesc = mysql_query("SELECT DISTINCT Description FROM PushPin
+						WHERE Link='' AND Email='' AND CorkboardTitle=''");
+						echo $pushdesc
+					?></a>
 				</td>
 			</tr>
 			<tr>
 				<td>
-					<a>Tags: <?php echo "tags, go, here"  ?></a>
+					<a>Tags: <?php 
+					$tag = mysql_query("SELECT Tag FROM PushPin
+					WHERE Email='' AND Link='' AND CorkboardTitle=''");
+					echo $tag
+					?></a>
 				</td>
 			</tr>
 		</table>
@@ -76,7 +117,7 @@
 				<td><hr></td><td><hr></td><td><hr></td>
 			</tr>
 			<?php
-				for ($i=1; $i<=10; $i++)
+				for ($i=1; $i<=5; $i++)
 				{
 					echo "<tr><td>";
 					echo "UserName". $i .":";
