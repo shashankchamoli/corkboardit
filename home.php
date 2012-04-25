@@ -69,7 +69,7 @@ mysql_select_db("$db_name")or die("cannot select DB");
             echo "<td>".$row['UserName']."</td>";
 	    $pinlink = "corkboard_view.php?email=".$row['Email']."&title=".$row['Title'];
 	    if ($row['Visibility'] == "Private") {
-		echo "<td><a href='password_corkboard.php'>".$row['Title']."</a></td>";
+		echo "<td><a href='password_corkboard.php?email=".$row['Email']."&title=".$row['Title']."'>".$row['Title']."</a></td>";
 	    } else {
 	        echo "<td><a href=".$pinlink.">".$row['Title']."</a></td>";
 	    }
