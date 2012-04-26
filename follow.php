@@ -13,13 +13,19 @@ $tbl_name="User"; // Table name
 mysql_connect("$host", "$username", "$password")or die("cannot connect"); 
 mysql_select_db("$db_name")or die("cannot select DB");
 
-$watchquery = sprintf("
+echo $_SESSION['myusername'];
+echo "<br />";
+echo $_POST['email'];
+
+$followquery = sprintf("
 INSERT INTO Follow
 VALUES ('%s', '%s')
 ",
 mysql_real_escape_string($_SESSION['myusername']),
 mysql_real_escape_string($_POST['email'])
 );
+mysql_query($followquery);
+
 header("location:".$_POST['back']);
 
 ?>

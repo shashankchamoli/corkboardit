@@ -21,6 +21,8 @@ mysql_real_escape_string($_SESSION['myusername']),
 mysql_real_escape_string($_POST['title']),
 mysql_real_escape_string($_POST['email'])
 );
+mysql_query($watchquery);
+
 header("location:".$_POST['back']);
 
 ?>

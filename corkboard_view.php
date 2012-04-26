@@ -37,24 +37,23 @@ AND Followee = '%s'",
 mysql_real_escape_string($_SESSION['myusername']),
 mysql_real_escape_string($cbowner));
 $followresult = mysql_query($followquery);
-if (mysql_num_rows($followresult) == 1) {
+$following = 0;
+if (mysql_num_rows($followresult) != 0) {
 	$following = 1;
-} else {
-	$following = 0;
 }
 
 $watchquery = sprintf("
 SELECT * FROM Watch
-WHERE Follower = '%s'
-AND Followee = '%s'",
+WHERE User = '%s'
+AND CorkboardTitle = '%s'
+AND CorkboardOwner = '%s'",
 mysql_real_escape_string($_SESSION['myusername']),
 mysql_real_escape_string($_GET['title']),
 mysql_real_escape_string($cbowner));
 $watchresult = mysql_query($watchquery);
-if (mysql_num_rows($watchresult) == 1) {
+$watching = 0;
+if (mysql_num_rows($watchresult) != 0) {
 	$watching = 1;
-} else {
-	$watching = 0;
 }
 
 ?>
