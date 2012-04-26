@@ -55,7 +55,18 @@ $cbcat = $row['CatName'];
 				<td><?php echo $cbcat ?></td>
 			</tr>
 			<tr>
-				<td>This board has <?php echo "## " ?>watchers</td>
+				<td>This board has <?php 
+					$watcherquery = sprintf("
+					SELECT COUNT(User) 
+					FROM Watch
+					WHERE CorkboardTitle = '%s'
+					AND CorkboardOwner = '%s'",
+					mysql_real_escape_string($_GET['title']),
+					mysql_real_escape_string($_GET['email']));
+					$result = mysql_query($watcherquery);
+					$row = mysql_fetch_assoc($result);
+					echo $row['COUNT(User)']." ";
+				?>watchers</td>
 			</trl>
 		<tr>
 		
