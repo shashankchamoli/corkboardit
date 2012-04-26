@@ -104,8 +104,7 @@ mysql_select_db("$db_name")or die("cannot select DB");
         ON u.Email = c.Email
 	WHERE  c.Email = '%s'
 	ORDER BY c.LastUpdate 
-	DESC 
-	LIMIT  4",
+	DESC ",
 	mysql_real_escape_string($_SESSION['myusername']));
 
 	$result = mysql_query($usercbquery); 

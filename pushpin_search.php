@@ -17,8 +17,8 @@
 	if(isset($pp)){
 	 include 'config.php';
 	 include 'opendb.php';
-	$query = "SELECT p.Description,p.CorkboardTitle,p.Email,p.Link FROM  PushPin p WHERE p.Description='$trimmedPP' OR p.Tag='$trimmedPP'";
-
+	$query = "SELECT p.Description,p.CorkboardTitle,p.Email,p.Link FROM  PushPin p LEFT JOIN Corkboard c ON c.Title= p.CorkboardTitle WHERE p.Description='$trimmedPP' OR p.Tag='$trimmedPP' OR c.CatName= '$trimmedPP'";
+	//$query1 = "SELECT p.Description,p.CorkboardTitle,p.Email,p.Link FROM PushPin p  WHERE c.CatName= 'Pets'";
  $numresults=mysql_query($query);
  $numrows=mysql_num_rows($numresults);
 
