@@ -39,7 +39,7 @@
 			<tr>
 			<td></td>
 				<td>
-					<button>Cancel</button>	<input type="submit" name="Submit" value="Add" >
+					<input type="submit" name="Submit" value="Add" >
 				</td>
 				</tr>
 		</table>
