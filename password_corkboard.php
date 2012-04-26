@@ -30,7 +30,7 @@ mysql_select_db("$db_name")or die("cannot select DB");
 		<form align="left" method="post" action="checkpassword.php">
 		<?php
 			echo "<input type='hidden' name='email' value=".$_GET['email']." />";
-			echo "<input type='hidden' name='title' value=".$_GET['title']." />";
+			echo "<input type='hidden' name='title' value=".urlencode($_GET['title'])." />";
 		?>		
 		<table align="center">
 			<tr>
@@ -43,7 +43,7 @@ mysql_select_db("$db_name")or die("cannot select DB");
 			</tr>
 			<td></td>
 				<td>
-					<button>Cancel</button>	<input type="submit" name="Submit" value="Submit" >
+					<input type="submit" name="Submit" value="Submit" >
 				</td>
 		</table>		
 	</body>
