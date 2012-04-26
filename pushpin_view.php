@@ -220,7 +220,7 @@ if (mysql_num_rows($followresult) != 0) {
 			<?php
 			
 			$commentquery = "SELECT Username, Text, DateAndTime FROM Comment WHERE OwnerEmail=\"".$email."\" AND PushpinLink=\"".$link."\"";
-			//echo $commentquery;
+
 				$result = mysql_query($commentquery);
 				while ($row = mysql_fetch_assoc($result)) {
 					echo "".$row['UserLiked'].", ";
