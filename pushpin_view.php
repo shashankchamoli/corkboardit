@@ -1,3 +1,64 @@
+<?php
+session_start();
+if(!session_is_registered(myusername)){
+header("location:login/mainlogin.php");
+}
+$host="academic-mysql.cc.gatech.edu"; // Host name 
+$username="cs4400_group29"; // Mysql username 
+$password="56wVseal"; // Mysql password 
+$db_name="cs4400_group29"; // Database name 
+$tbl_name="User"; // Table name
+
+// Connect to server and select databse.
+mysql_connect("$host", "$username", "$password")or die("cannot connect"); 
+mysql_select_db("$db_name")or die("cannot select DB");
+
+$cbquery = sprintf("
+	SELECT c.Email, u.UserName, c.CatName, c.LastUpdate
+        FROM Corkboard c
+        LEFT JOIN User AS u ON u.Email = '%s'
+        WHERE c.Title = '%s'
+        LIMIT 1
+	",
+	mysql_real_escape_string($_GET['email']),
+	mysql_real_escape_string($_GET['title'])
+);
+
+$result = mysql_query($cbquery);
+$row = mysql_fetch_assoc($result);
+$cbuser = $row['UserName'];
+$cbcat = $row['CatName'];
+$cbowner = $row['Email'];
+
+$followquery = sprintf("
+SELECT * FROM Follow
+WHERE Follower = '%s'
+AND Followee = '%s'",
+mysql_real_escape_string($_SESSION['myusername']),
+mysql_real_escape_string($cbowner));
+$followresult = mysql_query($followquery);
+$following = 0;
+if (mysql_num_rows($followresult) != 0) {
+	$following = 1;
+}
+
+$likequery = sprintf("
+SELECT * FROM Like
+WHERE User = '%s'
+AND PushpinLink = '%s'
+AND UserLiked = '%s'
+AND CorkboardLiked = '%s'
+",
+mysql_real_escape_string($_SESSION['myuername']),
+mysql_real_escape_string($_GET['link']),
+mysql_real_escape_string($cbowner),
+mysql_real_escape_string($_GET['title']));
+$likeresult = mysql_query($likequery);
+$liked = 0;
+if (mysql_num_rows($likeresult) != 0) {
+	$liked = 1;
+}
+?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -66,7 +127,17 @@
 
 		<table align="center">
 			<tr>
-				<td>Pinned by <?php echo $user; ?>&nbsp;<button>Follow</button></td>
+				<td>Pinned by <?php echo $user; ?>&nbsp;
+				<?php		
+				if ($_SESSION['myusername'] != $cbowner && $following == 0) {	
+					echo "<td><form method='post' action='follow.php'>";
+					echo    "<input type='hidden' name='back' value=".$_SERVER['REQUEST_URI'].">";
+					echo	"<input type='hidden' name='email' value=".$cbowner.">";			
+					echo	"<input type='submit' value='Follow'>";
+					echo "</form></td>";
+				}
+				?>
+				</td>
 			</tr>
 			<tr>
 				<td>On: <?php
@@ -131,7 +202,17 @@
 			</tr>
 			<tr align="center">
 				<td>
-					<button>Like</button>
+				<?php
+				if (liked == 0) {		
+					echo "<td><form method='post' action='like.php'>";
+					echo    "<input type='hidden' name='back' value=".$_SERVER['REQUEST_URI'].">";
+					echo	"<input type='hidden' name='pushpinlink' value=".$link.">";
+					echo	"<input type='hidden' name='userliked' value=".$cbowner.">";
+					echo	"<input type='hidden' name='corkboardliked' value=".$_GET['title'].">";			
+					echo	"<input type='submit' value='Like'>";
+					echo "</form></td>";
+				}
+				?>
 				</td>
 			</tr>
 		</table>
@@ -171,6 +252,7 @@
 			<?php
 			
 			$commentquery = "SELECT Username, Text, DateAndTime FROM Comment WHERE OwnerEmail=\"".$email."\" AND PushpinLink=\"".$link."\"";
+
 				$result = mysql_query($commentquery);
 				while ($row = mysql_fetch_assoc($result)) {
 					echo "".$row['UserLiked'].", ";
