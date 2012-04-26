@@ -39,10 +39,10 @@ mysql_select_db("$db_name")or die("cannot select DB");
     <br />
     <table border='1'>
     <tr>
-	<td>User</td>
+	<td>Updated By User</td>
 	<td>Title</td>
 	<td>Category</td>
-	<td>Last Updated</td>
+	<td>Updated On</td>
 	<td>Visibility</td>
     </tr>
     <?php

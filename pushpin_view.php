@@ -143,8 +143,12 @@
 				</td>
 			</tr>
 			<tr>
-				<form>				<td>
+				<form action ="make_comment.php" method="get">				<td>
 					Your Comment:
+					<input type="hidden" name="Link" value=<?php echo $link; ?> >
+				<input type="hidden" name="CorkboardTitle" value=<?php echo urlencode($corkTitle); ?>/>
+				<input type="hidden" name="Owner" value=<?php echo $email; ?>/>
+				<input type="hidden" name="back" value=<?php echo $_SERVER['REQUEST_URI']; ?>/>
 				</td>
 				<td>
 					<input class="textInput1" type="text" name="pushpin_comment"/>
@@ -152,9 +156,10 @@
 				<td>
 					<input type="Submit" value="Post" style="height:50px"/>
 				</td>
+				
 				</form>
 				<?php
-					date_default_timezone_set('America/New_York');
+
 					$date = date('m/d/Y h:i:s a', time());
 					$sql="INSERT INTO Comment (Username, DateAndTime, PushpinLink, Text, CorkboardTitle, OwnerEmail)
 						VALUES('','','','','','')"
