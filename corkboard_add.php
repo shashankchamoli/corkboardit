@@ -24,7 +24,7 @@
 			</tr>
 			<tr>
 				<td>
-					Catagory:
+					Category:
 				</td>
 				<td>
 					<select name="cork_catagory"> 
@@ -34,7 +34,7 @@
 						<?php
 							for ($i=1; $i<=5; $i++)
 							{
-								echo "<option value=Catagory" . $i . ">Catagory". $i ."</option>";
+								echo "<option value=Category" . $i . ">Category". $i ."</option>";
 							}
 						?>
 					</select>*
