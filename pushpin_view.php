@@ -31,24 +31,53 @@
 		?>
 		
 		<img src="images/logo_small.png" alt="logo" />
-		<br><br>
+		<br><br>		
 		
-		<h2 align="center"><?php 
-			$pushtitle = mysql_query("SELECT DISTINCT Description FROM PushPin
-				WHERE Link='' AND Email='' AND CorkboardTitle=''");
-			echo "$pushtitle on "
+		<h2 align="center">Corkboard: <?php 
+		
+		$email = $_GET['email'];
+		$corkTitle = $_GET['title'];
+		$link = $_GET['link'];
+
+
+			
+		$corklink = "corkboard_view.php?email=".$email."&title=".urlencode($corkTitle)."";
+		$visquery = "SELECT Visibility FROM Corkboard WHERE Title=\"".$corkTitle."\" AND Email\"".$email."\"";
+		$result = mysql_query($tempquery);
+		$row = mysql_fetch_assoc($result);
+		
+		if ($row['Visibility'] == "Private") {
+			echo "<td><a href='password_corkboard.php?email=".$email."&title=".urlencode($corkTitle)."'>".$corkTitle."</a></td>";
+			} else {
+				echo "<td><a href='corkboard_view.php?email=".$email."&title=".urlencode($corkTitle)."'>".$corkTitle."</a></td>";
+			}
+			
+			$userquery = "SELECT UserName FROM User WHERE Email=\"".$email."\"";
+			
+			$result = mysql_query($userquery);
+			$row = mysql_fetch_assoc($result);
+			
+			$user = $row['UserName'];
+
 		?>
 		
-		<a href="corkboard_view.php"><?php echo "Corkboard_Title" ?></a></h2>
+		
+		
 
 		<table align="center">
 			<tr>
-				<td>Pinned by <?php echo "UserName" ?>&nbsp;<button>Follow</button></td>
+				<td>Pinned by <?php echo $user; ?>&nbsp;<button>Follow</button></td>
 			</tr>
 			<tr>
 				<td>On: <?php
-					$pushdate = mysql_query("SELECT DISTINCT DateAndTime FROM PushPin WHERE Link = ''");
-					echo $pushdate
+				
+						$dateQuery = "SELECT DateAndTime, Description FROM PushPin WHERE Link=\"".$link."\" AND Email=\"".$email."\" AND CorkboardTitle=\"".$corkTitle."\"";
+						$result = mysql_query($dateQuery);
+						$row = mysql_fetch_assoc($result);
+						$dateAndTime = $row['DateAndTime'];
+						$description = $row['Description'];
+				
+					echo $dateAndTime;
 				?></td>
 			</tr>
 		</table>
@@ -57,26 +86,27 @@
 		<table align="center">
 			<tr>
 			<td>
-				<a href="Pushpin Image">
-					<img class="pushpinMain" src=php <?php $pinimg ?>/>
+				<a href="<?php echo $link;?>">
+					<img class="pushpinMain" src="<?php echo $link;?>"/>
 				</a>
 			</td>
 			</tr>
 			<tr>
 				<td>
 					<a><?php
-					$pushdesc = mysql_query("SELECT DISTINCT Description FROM PushPin
-						WHERE Link='' AND Email='' AND CorkboardTitle=''");
-						echo $pushdesc
+						echo "Description: ".$description."";
 					?></a>
 				</td>
 			</tr>
 			<tr>
 				<td>
 					<a>Tags: <?php 
-					$tag = mysql_query("SELECT Tag FROM PushPin
-					WHERE Email='' AND Link='' AND CorkboardTitle=''");
-					echo $tag
+					$tags = mysql_query("SELECT Tag FROM PushPin WHERE Link=\"".$link."\" AND Email=\"".$email."\" AND CorkboardTitle=\"".$corkTitle."\"");
+					$row = mysql_fetch_assoc($tags);
+					foreach($row as &$tag)
+					{
+						echo "".$tag.", ";
+					}
 					?></a>
 				</td>
 			</tr>
