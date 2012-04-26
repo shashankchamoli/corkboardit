@@ -23,7 +23,7 @@ mysql_select_db("$db_name")or die("cannot select DB");
 
 <?php
 $email=$_POST['email']; 
-$title=$_GET['title'];
+$title=$_POST['title'];
 $corkpass=$_POST['cork_pass'];
 
 echo $email."<br />";
