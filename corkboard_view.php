@@ -29,6 +29,34 @@ $row = mysql_fetch_assoc($result);
 $cbuser = $row['UserName'];
 $cbcat = $row['CatName'];
 $cbowner = $row['Email'];
+
+$followquery = sprintf("
+SELECT * FROM Follow
+WHERE Follower = '%s'
+AND Followee = '%s'",
+mysql_real_escape_string($_SESSION['myusername']),
+mysql_real_escape_string($cbowner));
+$followresult = mysql_query($followquery);
+if (mysql_num_rows($followresult) == 1) {
+	$following = 1;
+} else {
+	$following = 0;
+}
+
+$watchquery = sprintf("
+SELECT * FROM Watch
+WHERE Follower = '%s'
+AND Followee = '%s'",
+mysql_real_escape_string($_SESSION['myusername']),
+mysql_real_escape_string($_GET['title']),
+mysql_real_escape_string($cbowner));
+$watchresult = mysql_query($watchquery);
+if (mysql_num_rows($watchresult) == 1) {
+	$watching = 1;
+} else {
+	$watching = 0;
+}
+
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -47,7 +75,7 @@ $cbowner = $row['Email'];
 				<td><h2><?php echo $_GET["title"]?></h2></td>
 				<td>
 				<?php		
-				if ($_SESSION['myusername'] != $cbowner) {	
+				if ($_SESSION['myusername'] != $cbowner && $watching == 0) {	
 					echo "<td><form method='post' action='watch.php'>";
 					echo    "<input type='hidden' name='back' value=".$_SERVER['REQUEST_URI'].">";
 					echo	"<input type='hidden' name='email' value=".$cbowner.">";
@@ -62,7 +90,7 @@ $cbowner = $row['Email'];
 				<td>Owner: <?php echo $cbuser ?></td>
 				<td>
 				<?php		
-				if ($_SESSION['myusername'] != $cbowner) {	
+				if ($_SESSION['myusername'] != $cbowner && $following == 0) {	
 					echo "<td><form method='post' action='follow.php'>";
 					echo    "<input type='hidden' name='back' value=".$_SERVER['REQUEST_URI'].">";
 					echo	"<input type='hidden' name='email' value=".$cbowner.">";			
