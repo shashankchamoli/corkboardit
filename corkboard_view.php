@@ -45,11 +45,32 @@ $cbowner = $row['Email'];
 		<table align="Left">
 			<tr>
 				<td><h2><?php echo $_GET["title"]?></h2></td>
-				<td><button>Watch</button></td>
+				<td>
+				<?php		
+				if ($_SESSION['myusername'] != $cbowner) {	
+					echo "<td><form method='post' action='watch.php'>";
+					echo    "<input type='hidden' name='back' value=".$_SERVER['REQUEST_URI'].">";
+					echo	"<input type='hidden' name='email' value=".$cbowner.">";
+					echo	"<input type='hidden' name='title' value=".$_GET['title'].">";				
+					echo	"<input type='submit' value='Watch'>";
+					echo "</form></td>";
+				}
+				?>
+				</td>
 			</tr>
 			<tr>
 				<td>Owner: <?php echo $cbuser ?></td>
-				<td><button>Follow</button></td>
+				<td>
+				<?php		
+				if ($_SESSION['myusername'] != $cbowner) {	
+					echo "<td><form method='post' action='follow.php'>";
+					echo    "<input type='hidden' name='back' value=".$_SERVER['REQUEST_URI'].">";
+					echo	"<input type='hidden' name='email' value=".$cbowner.">";			
+					echo	"<input type='submit' value='Follow'>";
+					echo "</form></td>";
+				}
+				?>
+				</td>
 			</tr>
 			<tr>
 				<td>Category:</td>
