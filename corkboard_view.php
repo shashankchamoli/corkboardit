@@ -14,7 +14,7 @@ mysql_connect("$host", "$username", "$password")or die("cannot connect");
 mysql_select_db("$db_name")or die("cannot select DB");
 
 $cbquery = sprintf("
-	SELECT u.UserName, c.CatName, c.LastUpdate
+	SELECT c.Email, u.UserName, c.CatName, c.LastUpdate
         FROM Corkboard c
         LEFT JOIN User AS u ON u.Email = '%s'
         WHERE c.Title = '%s'
@@ -28,6 +28,7 @@ $result = mysql_query($cbquery);
 $row = mysql_fetch_assoc($result);
 $cbuser = $row['UserName'];
 $cbcat = $row['CatName'];
+$cbowner = $row['Email'];
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -70,7 +71,16 @@ $cbcat = $row['CatName'];
 			</trl>
 		<tr>
 		
-		<td><h3>Pushpins</h3></td><td><button>Add Pushpin</button></td>
+		<td><h3>Pushpins</h3></td>
+		<?php		
+		if ($_SESSION['myusername'] == $cbowner) {	
+			echo "<td><form method='post' action='pushpin_add.php'>";
+			echo	"<input type='hidden' name='email' value=".$cbowner.">";
+			echo	"<input type='hidden' name='title' value=".$_GET['title'].">";				
+			echo	"<input type='submit' value='Add Pushpin'>";
+			echo "</form></td>";
+		}
+		?>
 		</tr>
 		<?php
 			$cbtnquery = sprintf("

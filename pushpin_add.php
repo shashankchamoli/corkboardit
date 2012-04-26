@@ -9,7 +9,7 @@
 		<img src="images/logo_small.png" alt="logo" />
 		<br><br>
 		
-		<h2 align="center">Add Pushpin to Corkboard: <?php echo "Title"?></h2>
+		<h2 align="center"><?php echo "Add Pushpin to Corkboard ".$_POST['title'].": "?></h2>
 		<form align="left">
 		<table align="center">
 			<tr>
