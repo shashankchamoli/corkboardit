@@ -115,7 +115,18 @@
 		<table align="center">
 			<tr>
 				<td>
-					<a><?php echo "List of usernames goes here.." ?> like this.</a>
+					<?php
+					
+					$likequery = "SELECT UserLiked FROM Likes WHERE User=\"".$email."\" AND PushpinLink=\"".$link."\"";
+					$result = mysql_query($likequery);
+					while ($row = mysql_fetch_assoc($result)) {
+						echo "".$row['UserLiked'].", ";
+					}
+					
+					
+					
+					
+					  ?> like(s) this.
 				</td>
 			</tr>
 			<tr align="center">
