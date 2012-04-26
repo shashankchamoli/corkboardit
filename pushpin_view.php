@@ -41,6 +41,23 @@ $following = 0;
 if (mysql_num_rows($followresult) != 0) {
 	$following = 1;
 }
+
+$likequery = sprintf("
+SELECT * FROM Like
+WHERE User = '%s'
+AND PushpinLink = '%s'
+AND UserLiked = '%s'
+AND CorkboardLiked = '%s'
+",
+mysql_real_escape_string($_SESSION['myuername']),
+mysql_real_escape_string($_GET['link']),
+mysql_real_escape_string($cbowner),
+mysql_real_escape_string($_GET['title']));
+$likeresult = mysql_query($likequery);
+$liked = 0;
+if (mysql_num_rows($likeresult) != 0) {
+	$liked = 1;
+}
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -185,7 +202,17 @@ if (mysql_num_rows($followresult) != 0) {
 			</tr>
 			<tr align="center">
 				<td>
-					<button>Like</button>
+				<?php
+				if (liked == 0) {		
+					echo "<td><form method='post' action='like.php'>";
+					echo    "<input type='hidden' name='back' value=".$_SERVER['REQUEST_URI'].">";
+					echo	"<input type='hidden' name='pushpinlink' value=".$link.">";
+					echo	"<input type='hidden' name='userliked' value=".$cbowner.">";
+					echo	"<input type='hidden' name='corkboardliked' value=".$_GET['title'].">";			
+					echo	"<input type='submit' value='Like'>";
+					echo "</form></td>";
+				}
+				?>
 				</td>
 			</tr>
 		</table>
