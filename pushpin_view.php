@@ -164,17 +164,20 @@
 				<td><hr></td><td><hr></td><td><hr></td>
 			</tr>
 			<?php
-				for ($i=1; $i<=5; $i++)
-				{
+			
+			$commentquery = "SELECT Username, Text, DateAndTime FROM Comment WHERE OwnerEmail=\"".$email."\" AND PushpinLink=\"".$link."\"";
+			echo $commentquery;
+				$result = mysql_query($commentquery);
+				while ($row = mysql_fetch_assoc($result)) {
+					echo "".$row['UserLiked'].", ";
 					echo "<tr><td>";
-					echo "UserName". $i .":";
+					echo "". $row['Username'] .":";
 					echo "</td><td>";
-					echo "User Comment goes here";
+					echo "".$row['Text']."";
 					echo "</td><td>";
-					echo "On: DATE";
+					echo "On: ".$row['DateAndTime']."";
 					echo "</td></tr>";
 					echo "<tr><td><hr></td><td><hr></td><td><hr></td></tr>";
-										
 				}
 			
 			 ?>
